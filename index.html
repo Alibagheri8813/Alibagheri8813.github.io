@@ -117,7 +117,10 @@
   .tilt-inner{transform:translateZ(40px)}
 
   /* Project image */
-  .project-img{filter:grayscale(.3) contrast(1.05) brightness(.85);transition:filter .5s,transform .6s}
+  .project-img {
+  filter: grayscale(0) contrast(1.05) brightness(1);
+  transition: filter .5s, transform .6s;
+}
   .project-card:hover .project-img{filter:grayscale(0) contrast(1.05) brightness(1);transform:scale(1.05)}
 
   /* Nav link */
