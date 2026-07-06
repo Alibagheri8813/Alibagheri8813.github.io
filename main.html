@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ali Bagheri — Young AI Developer & Full-Stack Engineer. Building intelligent, voice-driven AI agents and modern web applications.">
+<title>Ali Bagheri — AI Developer & Full-Stack Engineer</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --bg-soft:#101010;
+    --surface:#161614;
+    --surface-2:#1d1d1a;
+    --border:#26261f;
+    --border-bright:#3a3a30;
+    --text:#f5f5f0;
+    --text-dim:#9a9a90;
+    --text-dimmer:#5a5a52;
+    --accent:#c5f23a;
+    --accent-2:#ff6b4a;
+    --accent-glow:rgba(197,242,58,.35);
+  }
+
+  *{box-sizing:border-box}
+  html,body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+  body{cursor:none;overflow-x:hidden}
+
+  ::selection{background:var(--accent);color:#000}
+
+  .font-display{font-family:'Syne',serif;letter-spacing:-.03em}
+  .font-mono{font-family:'JetBrains Mono',monospace}
+
+  /* Grain overlay */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity:.06;mix-blend-mode:overlay;
+  }
+
+  /* Grid background */
+  .grid-bg{
+    background-image:
+      linear-gradient(rgba(197,242,58,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(197,242,58,.04) 1px,transparent 1px);
+    background-size:64px 64px;
+  }
+
+  /* Custom cursor */
+  .cursor-dot,.cursor-ring{
+    position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+    border-radius:50%;transform:translate(-50%,-50%);
+    transition:width .25s ease,height .25s ease,background .25s ease,border-color .25s ease;
+  }
+  .cursor-dot{width:6px;height:6px;background:var(--accent)}
+  .cursor-ring{width:36px;height:36px;border:1px solid var(--accent);opacity:.5}
+  .cursor-ring.hover{width:60px;height:60px;background:rgba(197,242,58,.1);border-color:var(--accent)}
+  @media (hover:none){.cursor-dot,.cursor-ring{display:none}body{cursor:auto}}
+
+  /* Scroll progress */
+  .scroll-progress{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:9990;width:0;box-shadow:0 0 12px var(--accent-glow)}
+
+  /* Reveal animation */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+  .reveal-stagger > *{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+  .reveal-stagger.in > *{opacity:1;transform:translateY(0)}
+  .reveal-stagger.in > *:nth-child(1){transition-delay:.05s}
+  .reveal-stagger.in > *:nth-child(2){transition-delay:.15s}
+  .reveal-stagger.in > *:nth-child(3){transition-delay:.25s}
+  .reveal-stagger.in > *:nth-child(4){transition-delay:.35s}
+  .reveal-stagger.in > *:nth-child(5){transition-delay:.45s}
+  .reveal-stagger.in > *:nth-child(6){transition-delay:.55s}
+
+  /* Marquee */
+  .marquee{display:flex;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .marquee-track{display:flex;gap:3rem;animation:scroll 40s linear infinite;flex-shrink:0;padding-right:3rem}
+  .marquee-track.reverse{animation-direction:reverse;animation-duration:50s}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* Buttons */
+  .btn-primary{
+    position:relative;display:inline-flex;align-items:center;gap:.6rem;
+    padding:.95rem 1.6rem;background:var(--accent);color:#0a0a0a;
+    font-weight:600;border-radius:999px;overflow:hidden;
+    transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px -8px var(--accent-glow)}
+  .btn-ghost{
+    display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 1.6rem;
+    border:1px solid var(--border-bright);color:var(--text);border-radius:999px;
+    transition:all .3s;background:rgba(255,255,255,.02)
+  }
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:rgba(197,242,58,.05)}
+
+  /* Section label */
+  .section-label{
+    display:inline-flex;align-items:center;gap:.6rem;
+    font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--text-dim);
+  }
+  .section-label::before{content:"";width:24px;height:1px;background:var(--accent)}
+
+  /* Status pulse */
+  .status-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .status-dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--accent);animation:pulse 2s ease-out infinite}
+  @keyframes pulse{0%{transform:scale(.8);opacity:1}100%{transform:scale(2);opacity:0}}
+
+  /* Tilt card */
+  .tilt{transition:transform .4s cubic-bezier(.16,1,.3,1);transform-style:preserve-3d;will-change:transform}
+  .tilt-inner{transform:translateZ(40px)}
+
+  /* Project image */
+  .project-img{filter:grayscale(.3) contrast(1.05) brightness(.85);transition:filter .5s,transform .6s}
+  .project-card:hover .project-img{filter:grayscale(0) contrast(1.05) brightness(1);transform:scale(1.05)}
+
+  /* Nav link */
+  .nav-link{position:relative;color:var(--text-dim);transition:color .3s}
+  .nav-link:hover{color:var(--text)}
+  .nav-link.active{color:var(--accent)}
+  .nav-link::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:1px;background:var(--accent);transition:width .3s}
+  .nav-link:hover::after,.nav-link.active::after{width:100%}
+
+  /* Timeline */
+  .timeline-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--border-bright) 10%,var(--border-bright) 90%,transparent);transform:translateX(-50%)}
+  .timeline-dot{width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);box-shadow:0 0 0 4px var(--bg),0 0 20px var(--accent-glow)}
+  @media (max-width:768px){.timeline-line{left:20px}.timeline-dot{position:relative;left:0}}
+
+  /* Mobile menu */
+  .mobile-menu{transform:translateX(100%);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+  .mobile-menu.open{transform:translateX(0)}
+
+  /* Toast */
+  .toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,120%);background:var(--surface-2);border:1px solid var(--border-bright);color:var(--text);padding:.9rem 1.4rem;border-radius:999px;font-size:.85rem;z-index:9999;transition:transform .4s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:.6rem;box-shadow:0 20px 60px -10px rgba(0,0,0,.6)}
+  .toast.show{transform:translate(-50%,0)}
+
+  /* Hero canvas */
+  #heroCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+
+  /* Typewriter caret */
+  .caret{display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:4px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  /* Achievement number */
+  .ach-num{font-family:'Syne',serif;font-weight:700;font-size:3.5rem;line-height:1;background:linear-gradient(180deg,var(--text),var(--text-dim));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* Glass card */
+  .glass{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid var(--border);backdrop-filter:blur(10px)}
+
+  /* Hide scrollbar on horizontal scroll containers */
+  .no-scrollbar::-webkit-scrollbar{display:none}
+  .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+
+  /* Magnetic */
+  .magnetic{transition:transform .3s cubic-bezier(.16,1,.3,1)}
+
+  /* Circle Photo Frame */
+  .circle-photo-frame{
+    position:relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+    border-radius: 50%;
+    padding: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 60px var(--accent-glow);
+  }
+  .circle-photo-frame img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--bg);
+    transition: transform .8s cubic-bezier(.16,1,.3,1);
+  }
+  .circle-photo-frame:hover img{
+    transform: scale(1.03);
+  }
+  .circle-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border-bright);
+    padding: .5rem 1rem;
+    border-radius: 999px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  /* Glow border on hover */
+  .glow-border{position:relative;overflow:hidden}
+  .glow-border::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,transparent,var(--accent),transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s}
+  .glow-border:hover::before{opacity:1}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<!-- Scroll progress -->
+<div class="scroll-progress"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-5 flex items-center justify-between backdrop-blur-xl bg-black/40 border-b border-white/5">
+  <a href="#hero" class="flex items-center gap-2 group" data-magnetic>
+    <div class="w-9 h-9 rounded-lg bg-[var(--accent)] flex items-center justify-center font-display font-bold text-black text-lg">AB</div>
+    <div class="hidden sm:block">
+      <div class="text-sm font-semibold leading-none">Ali Bagheri</div>
+      <div class="text-[10px] font-mono text-[var(--text-dim)] mt-0.5">v1.0 · portfolio</div>
+    </div>
+  </a>
+
+  <div class="hidden md:flex items-center gap-8 text-sm">
+    <a href="#about" class="nav-link" data-hover>About</a>
+    <a href="#path" class="nav-link" data-hover>Path</a>
+    <a href="#stack" class="nav-link" data-hover>Stack</a>
+    <a href="#work" class="nav-link" data-hover>Work</a>
+    <a href="#achievements" class="nav-link" data-hover>Awards</a>
+    <a href="#contact" class="nav-link" data-hover>Contact</a>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full glass">
+      <span class="status-dot"></span>
+      <span class="text-[11px] font-mono text-[var(--text-dim)]">AVAILABLE FOR WORK</span>
+    </div>
+    <button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass" data-hover aria-label="Open menu">
+      <i data-lucide="menu" class="w-5 h-5"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-[var(--bg)] md:hidden flex flex-col items-center justify-center gap-8 text-2xl font-display">
+  <button id="closeMenu" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-lg glass" aria-label="Close menu">
+    <i data-lucide="x" class="w-5 h-5"></i>
+  </button>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#path" class="mobile-link">Path</a>
+  <a href="#stack" class="mobile-link">Stack</a>
+  <a href="#work" class="mobile-link">Work</a>
+  <a href="#achievements" class="mobile-link">Awards</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section id="hero" class="relative min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 pb-12 overflow-hidden grid-bg">
+  <canvas id="heroCanvas"></canvas>
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--bg)] pointer-events-none"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto w-full">
+    <div class="flex items-center gap-3 mb-8 reveal">
+      <span class="status-dot"></span>
+      <span class="font-mono text-xs text-[var(--text-dim)] tracking-widest">SYSTEM ONLINE · <span id="liveTime"></span> · TEHRAN, IR</span>
+    </div>
+
+    <h1 class="font-display font-bold text-[14vw] md:text-[10vw] leading-[.9] mb-6 reveal">
+      Ali<br>
+      <span class="text-[var(--accent)]">Bagheri<span class="text-[var(--accent-2)]">.</span></span>
+    </h1>
+
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 reveal">
+      <div class="max-w-xl">
+        <div class="font-mono text-sm text-[var(--text-dim)] mb-3">› whoami</div>
+        <div class="text-2xl md:text-3xl font-light">
+          <span id="roleText">AI Developer</span><span class="caret"></span>
+        </div>
+        <p class="mt-6 text-[var(--text-dim)] leading-relaxed">
+          A 11th-grade engineer building intelligent, voice-driven AI agents and full-stack web applications. Bridging the gap between raw intelligence and practical, human-centric products.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <a href="#work" class="btn-primary" data-hover data-magnetic>
+          View selected work
+          <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#contact" class="btn-ghost" data-hover data-magnetic>
+          Get in touch
+          <i data-lucide="send" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--text-dimmer)]">
+    <span class="font-mono text-[10px] tracking-widest">SCROLL</span>
+    <div class="w-px h-12 bg-gradient-to-b from-[var(--accent)] to-transparent"></div>
+  </div>
+</section>
+
+<!-- Marquee strip -->
+<div class="border-y border-[var(--border)] py-5 bg-[var(--bg-soft)]">
+  <div class="marquee">
+    <div class="marquee-track font-display font-bold text-3xl md:text-5xl uppercase">
+      <span class="flex items-center gap-12">Think <span class="text-[var(--accent)]">·</span> Build <span class="text-[var(--accent)]">·</span> Innovate <span class="text-[var(--accent)]">·</span> Repeat <span class="text-[var(--accent-2)]">✦</span></span>
+      <span class="flex items-center gap-12">Think <span class="text-[var(--accent)]">·</span> Build <span class="text-[var(--accent)]">·</span> Innovate <span class="text-[var(--accent)]">·</span> Repeat <span class="text-[var(--accent-2)]">✦</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="px-6 md:px-12 py-24 md:py-32">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-label reveal mb-6">01 / About</div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+      <div class="lg:col-span-5 reveal lg:self-start">
+        <div class="circle-photo-frame">
+          <img src="selfie.jpg" alt="Ali Bagheri portrait" loading="lazy">
+          <div class="circle-badge">
+            <span class="status-dot"></span>
+            <span class="font-mono text-[10px] tracking-widest text-[var(--text-dim)]">AVAILABLE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 reveal">
+        <h2 class="font-display font-semibold text-4xl md:text-6xl leading-[1.05] mb-8">
+          Engineer by training,<br>
+          <span class="text-[var(--text-dim)]">builder by obsession.</span>
+        </h2>
+
+        <div class="space-y-5 text-[var(--text-dim)] leading-relaxed text-lg">
+          <p>I am Ali Bagheri, a young AI developer and full-stack engineer currently studying at Allame Heli 4 (Sampad). My journey began with a fascination for how systems think and communicate, evolving quickly into building complex, AI-powered architectures.</p>
+          <p>I specialize in developing practical AI agents using LangChain and LangGraph, with a strong foundation in Django and modern TypeScript ecosystems. I don't just learn technologies; I architect them into functional, real-world products—like Persian voice assistants and semantic search engines.</p>
+          <p>When I'm not pushing the boundaries of what's possible at my age, I'm competing at the highest levels, earning top spots in national informatics olympiads and web development competitions. I believe exceptional thinking leads to exceptional building.</p>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="resume.pdf" download class="btn-primary" data-hover data-magnetic>
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Download Resume
+          </a>
+          <a href="#contact" class="btn-ghost" data-hover data-magnetic>
+            Contact Me
+          </a>
+        </div>
+
+        <!-- Now widget -->
+        <div class="mt-10 glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <i data-lucide="radio" class="w-4 h-4 text-[var(--accent)]"></i>
+            <span class="font-mono text-xs tracking-widest text-[var(--text-dim)]">NOW · CURRENTLY ACTIVE</span>
+          </div>
+          <ul class="space-y-3 text-sm">
+            <li class="flex gap-3"><span class="text-[var(--accent)] font-mono">→</span><span><strong class="text-[var(--text)]">Building:</strong> Practical AI agent-based products with LangChain & LangGraph</span></li>
+            <li class="flex gap-3"><span class="text-[var(--accent)] font-mono">→</span><span><strong class="text-[var(--text)]">Learning:</strong> Deep Learning with Python & Advanced TypeScript (Next.js)</span></li>
+            <li class="flex gap-3"><span class="text-[var(--accent)] font-mono">→</span><span><strong class="text-[var(--text)]">Exploring:</strong> RAG systems and multi-agent communication frameworks</span></li>
+            <li class="flex gap-3"><span class="text-[var(--accent)] font-mono">→</span><span><strong class="text-[var(--text)]">Status:</strong> 11th Grade Student at Allame Heli 4 (Sampad)</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 reveal-stagger">
+      <div class="border-t border-[var(--border)] pt-6">
+        <div class="ach-num" data-count="5" data-suffix="+">0</div>
+        <div class="font-mono text-xs text-[var(--text-dim)] mt-2 tracking-widest">AI & WEB PROJECTS</div>
+      </div>
+      <div class="border-t border-[var(--border)] pt-6">
+        <div class="ach-num" data-count="2">0</div>
+        <div class="font-mono text-xs text-[var(--text-dim)] mt-2 tracking-widest">GOLD MEDALS (KHARAZMI)</div>
+      </div>
+      <div class="border-t border-[var(--border)] pt-6">
+        <div class="ach-num" data-count="10" data-suffix="+">0</div>
+        <div class="font-mono text-xs text-[var(--text-dim)] mt-2 tracking-widest">CERTIFICATIONS EARNED</div>
+      </div>
+      <div class="border-t border-[var(--border)] pt-6">
+        <div class="ach-num">Top 3</div>
+        <div class="font-mono text-xs text-[var(--text-dim)] mt-2 tracking-widest">SCHOOL RANKING</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING PATH -->
+<section id="path" class="px-6 md:px-12 py-24 md:py-32 bg-[var(--bg-soft)] border-y border-[var(--border)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div class="reveal">
+        <div class="section-label mb-6">02 / Trajectory</div>
+        <h2 class="font-display font-semibold text-4xl md:text-6xl leading-[1.05]">
+          Learning path,<br>
+          <span class="text-[var(--text-dim)]">annotated.</span>
+        </h2>
+      </div>
+      <p class="text-[var(--text-dim)] max-w-md reveal">A trajectory through programming, systems architecture, and artificial intelligence. Each node represents a deliberate pivot towards building intelligent applications.</p>
+    </div>
+
+    <div class="relative">
+      <div class="timeline-line"></div>
+
+      <div class="space-y-12 md:space-y-20">
+        <!-- Timeline items -->
+        <div class="relative grid md:grid-cols-2 gap-8 reveal">
+          <div class="md:text-right md:pr-12 pl-12 md:pl-0">
+            <div class="font-mono text-xs text-[var(--accent)] tracking-widest">FOUNDATION</div>
+            <h3 class="font-display font-semibold text-2xl mt-2">Python & Django</h3>
+            <p class="text-[var(--text-dim)] mt-3 text-sm">Started at Tehran Technical Complex. Mastered Python fundamentals and transitioned into backend web architecture using Django, building robust, data-driven systems.</p>
+          </div>
+          <div class="absolute left-5 md:left-1/2 top-1 -translate-x-1/2 timeline-dot"></div>
+          <div class="hidden md:block"></div>
+        </div>
+
+        <div class="relative grid md:grid-cols-2 gap-8 reveal">
+          <div class="hidden md:block"></div>
+          <div class="absolute left-5 md:left-1/2 top-1 -translate-x-1/2 timeline-dot"></div>
+          <div class="md:pl-12 pl-12">
+            <div class="font-mono text-xs text-[var(--accent)] tracking-widest">FRONTEND MASTERY</div>
+            <h3 class="font-display font-semibold text-2xl mt-2">HTML, CSS & JavaScript</h3>
+            <p class="text-[var(--text-dim)] mt-3 text-sm">Formalized my frontend skills at TTC. Began creating interactive, dynamic user interfaces and laying the groundwork for full-stack execution.</p>
+          </div>
+        </div>
+
+        <div class="relative grid md:grid-cols-2 gap-8 reveal">
+          <div class="md:text-right md:pr-12 pl-12 md:pl-0">
+            <div class="font-mono text-xs text-[var(--accent)] tracking-widest">AI PIVOT</div>
+            <h3 class="font-display font-semibold text-2xl mt-2">Machine & Deep Learning</h3>
+            <p class="text-[var(--text-dim)] mt-3 text-sm">Accepted into the Iranian National Informatics Olympiad (INOI) first-layer exam. Undertook rigorous ML & DL coursework, shifting my focus toward artificial intelligence.</p>
+          </div>
+          <div class="absolute left-5 md:left-1/2 top-1 -translate-x-1/2 timeline-dot"></div>
+          <div class="hidden md:block"></div>
+        </div>
+
+        <div class="relative grid md:grid-cols-2 gap-8 reveal">
+          <div class="hidden md:block"></div>
+          <div class="absolute left-5 md:left-1/2 top-1 -translate-x-1/2 timeline-dot"></div>
+          <div class="md:pl-12 pl-12">
+            <div class="font-mono text-xs text-[var(--accent)] tracking-widest">AGENT ARCHITECTURE</div>
+            <h3 class="font-display font-semibold text-2xl mt-2">LangChain & Voice AI</h3>
+            <p class="text-[var(--text-dim)] mt-3 text-sm">Began architecting practical AI agents. Implemented Persian voice assistants and RAG-based e-commerce consultants using LangChain and LangGraph.</p>
+          </div>
+        </div>
+
+        <div class="relative grid md:grid-cols-2 gap-8 reveal">
+          <div class="md:text-right md:pr-12 pl-12 md:pl-0">
+            <div class="font-mono text-xs text-[var(--accent)] tracking-widest">MODERN STACK</div>
+            <h3 class="font-display font-semibold text-2xl mt-2">TypeScript & Next.js</h3>
+            <p class="text-[var(--text-dim)] mt-3 text-sm">Currently advancing through TypeScript and Next.js at TTC to build highly scalable, type-safe full-stack AI applications.</p>
+          </div>
+          <div class="absolute left-5 md:left-1/2 top-1 -translate-x-1/2 timeline-dot"></div>
+          <div class="hidden md:block"></div>
+        </div>
+
+        <div class="relative grid md:grid-cols-2 gap-8 reveal">
+          <div class="hidden md:block"></div>
+          <div class="absolute left-5 md:left-1/2 top-1 -translate-x-1/2 timeline-dot"></div>
+          <div class="md:pl-12 pl-12">
+            <div class="font-mono text-xs text-[var(--accent)] tracking-widest">NOW · FRONTIER</div>
+            <h3 class="font-display font-semibold text-2xl mt-2">Building Practical AI</h3>
+            <p class="text-[var(--text-dim)] mt-3 text-sm">Actively developing production-ready AI agent systems and semantic search engines, pushing the boundaries of what young engineers can ship.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="stack" class="px-6 md:px-12 py-24 md:py-32">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div class="reveal">
+        <div class="section-label mb-6">03 / Toolkit</div>
+        <h2 class="font-display font-semibold text-4xl md:text-6xl leading-[1.05]">
+          Stack &<br>
+          <span class="text-[var(--text-dim)]">surfaces.</span>
+        </h2>
+      </div>
+      <p class="text-[var(--text-dim)] max-w-md reveal">The technologies I leverage to design, train, and deploy intelligent systems and full-stack applications.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 reveal-stagger">
+      <div class="glass rounded-2xl p-6 glow-border">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="brain-circuit" class="w-5 h-5 text-[var(--accent)]"></i>
+          </div>
+          <div class="font-mono text-xs text-[var(--text-dim)] tracking-widest">AI & ML</div>
+        </div>
+        <ul class="space-y-2 text-sm">
+          <li class="flex justify-between"><span>LangChain</span><span class="text-[var(--text-dimmer)] font-mono">★★★</span></li>
+          <li class="flex justify-between"><span>LangGraph</span><span class="text-[var(--text-dimmer)] font-mono">★★★</span></li>
+          <li class="flex justify-between"><span>RAG Systems</span><span class="text-[var(--text-dimmer)] font-mono">★★★</span></li>
+          <li class="flex justify-between"><span>Deep Learning</span><span class="text-[var(--text-dimmer)] font-mono">★★</span></li>
+          <li class="flex justify-between"><span>Prompt Engineering</span><span class="text-[var(--text-dimmer)] font-mono">★★★</span></li>
+        </ul>
+      </div>
+
+      <div class="glass rounded-2xl p-6 glow-border">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="code-2" class="w-5 h-5 text-[var(--accent)]"></i>
+          </div>
+          <div class="font-mono text-xs text-[var(--text-dim)] tracking-widest">LANGUAGES</div>
+        </div>
+        <ul class="space-y-2 text-sm">
+          <li class="flex justify-between"><span>Python</span><span class="text-[var(--text-dimmer)] font-mono">90%</span></li>
+          <li class="flex justify-between"><span>TypeScript</span><span class="text-[var(--text-dimmer)] font-mono">75%</span></li>
+          <li class="flex justify-between"><span>JavaScript</span><span class="text-[var(--text-dimmer)] font-mono">85%</span></li>
+          <li class="flex justify-between"><span>HTML/CSS</span><span class="text-[var(--text-dimmer)] font-mono">90%</span></li>
+        </ul>
+      </div>
+
+      <div class="glass rounded-2xl p-6 glow-border">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="server" class="w-5 h-5 text-[var(--accent)]"></i>
+          </div>
+          <div class="font-mono text-xs text-[var(--text-dim)] tracking-widest">BACKEND</div>
+        </div>
+        <ul class="space-y-2 text-sm">
+          <li class="flex justify-between"><span>Django</span><span class="text-[var(--text-dimmer)] font-mono">★★★</span></li>
+          <li class="flex justify-between"><span>REST APIs</span><span class="text-[var(--text-dimmer)] font-mono">★★★</span></li>
+          <li class="flex justify-between"><span>Next.js (API)</span><span class="text-[var(--text-dimmer)] font-mono">★★</span></li>
+          <li class="flex justify-between"><span>Google Calendar API</span><span class="text-[var(--text-dimmer)] font-mono">★★★</span></li>
+        </ul>
+      </div>
+
+      <div class="glass rounded-2xl p-6 glow-border">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="layout-dashboard" class="w-5 h-5 text-[var(--accent)]"></i>
+          </div>
+          <div class="font-mono text-xs text-[var(--text-dim)] tracking-widest">FRONTEND</div>
+        </div>
+        <ul class="space-y-2 text-sm">
+          <li class="flex justify-between"><span>Next.js</span><span class="text-[var(--text-dimmer)] font-mono">★★</span></li>
+          <li class="flex justify-between"><span>React</span><span class="text-[var(--text-dimmer)] font-mono">★★</span></li>
+          <li class="flex justify-between"><span>TailwindCSS</span><span class="text-[var(--text-dimmer)] font-mono">★★</span></li>
+          <li class="flex justify-between"><span>Responsive Design</span><span class="text-[var(--text-dimmer)] font-mono">★★★</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Marquee of tools -->
+    <div class="mt-16 py-6 border-y border-[var(--border)] reveal">
+      <div class="marquee">
+        <div class="marquee-track reverse font-mono text-sm text-[var(--text-dim)]">
+          <span class="flex gap-8 items-center">Python <span class="text-[var(--accent)]">/</span> LangChain <span class="text-[var(--accent)]">/</span> LangGraph <span class="text-[var(--accent)]">/</span> Django <span class="text-[var(--accent)]">/</span> TypeScript <span class="text-[var(--accent)]">/</span> Next.js <span class="text-[var(--accent)]">/</span> Deep Learning <span class="text-[var(--accent)]">/</span> RAG <span class="text-[var(--accent)]">/</span> Voice AI <span class="text-[var(--accent-2)]">✦</span></span>
+          <span class="flex gap-8 items-center">Python <span class="text-[var(--accent)]">/</span> LangChain <span class="text-[var(--accent)]">/</span> LangGraph <span class="text-[var(--accent)]">/</span> Django <span class="text-[var(--accent)]">/</span> TypeScript <span class="text-[var(--accent)]">/</span> Next.js <span class="text-[var(--accent)]">/</span> Deep Learning <span class="text-[var(--accent)]">/</span> RAG <span class="text-[var(--accent)]">/</span> Voice AI <span class="text-[var(--accent-2)]">✦</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="work" class="px-6 md:px-12 py-24 md:py-32 bg-[var(--bg-soft)] border-y border-[var(--border)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div class="reveal">
+        <div class="section-label mb-6">04 / Selected Work</div>
+        <h2 class="font-display font-semibold text-4xl md:text-6xl leading-[1.05]">
+          Things I've<br>
+          <span class="text-[var(--text-dim)]">engineered.</span>
+        </h2>
+      </div>
+      <a href="https://github.com" target="_blank" rel="noopener" class="btn-ghost reveal" data-hover data-magnetic>
+        See all on GitHub
+        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-stagger">
+      <!-- Project 1 - Featured -->
+      <article class="project-card tilt glass rounded-2xl overflow-hidden glow-border group md:col-span-2" data-tilt>
+        <div class="grid md:grid-cols-2">
+          <div class="relative overflow-hidden h-72 md:h-auto">
+            <img src="https://placehold.co/600x400?text=No+Image" alt="AI E-commerce" class="project-img w-full h-full object-cover" loading="lazy">
+            <div class="absolute top-4 left-4 flex gap-2">
+              <span class="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-[10px] font-mono tracking-wider">FEATURED</span>
+              <span class="px-2.5 py-1 rounded-full bg-[var(--accent)] text-black text-[10px] font-mono tracking-wider">AI POWERED</span>
+            </div>
+          </div>
+          <div class="tilt-inner p-8 md:p-10 flex flex-col justify-center">
+            <div class="flex items-start justify-between gap-4 mb-3">
+              <h3 class="font-display font-semibold text-3xl">Persian Voice E-Commerce Consultant</h3>
+            </div>
+            <p class="text-[var(--text-dim)] text-base leading-relaxed mb-6">An AI-driven e-commerce platform featuring an intelligent Persian voice assistant. Users can verbally search for products and receive consultations. Built using RAG (Retrieval-Augmented Generation) architecture for highly accurate, context-aware responses.</p>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Python</span>
+              <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Django</span>
+              <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">LangChain</span>
+              <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">RAG</span>
+              <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Voice AI</span>
+            </div>
+            <div class="flex gap-3">
+              <a href="#" class="btn-ghost text-sm" data-hover><i data-lucide="external-link" class="w-4 h-4 mr-2"></i>Live Demo</a>
+              <a href="#" class="btn-ghost text-sm" data-hover><i data-lucide="github" class="w-4 h-4 mr-2"></i>Source Code</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="project-card tilt glass rounded-2xl overflow-hidden glow-border group" data-tilt>
+        <div class="relative overflow-hidden h-64">
+          <img src="image.png" alt="Semantic Search" class="project-img w-full h-full object-cover" loading="lazy">
+          <div class="absolute top-4 left-4 flex gap-2">
+            <span class="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-[10px] font-mono tracking-wider">DEEP LEARNING</span>
+          </div>
+        </div>
+        <div class="tilt-inner p-7">
+          <div class="flex items-start justify-between gap-4 mb-3">
+            <h3 class="font-display font-semibold text-2xl">Visual Semantic Search Engine</h3>
+          </div>
+          <p class="text-[var(--text-dim)] text-sm leading-relaxed mb-5">An e-commerce feature allowing users to search for products using images instead of text. Utilizes deep learning embeddings to compute semantic similarity and deliver highly relevant visual matches.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Deep Learning</span>
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Vector Search</span>
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Python</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="project-card tilt glass rounded-2xl overflow-hidden glow-border group" data-tilt>
+        <div class="relative overflow-hidden h-64">
+          <img src="https://placehold.co/600x400?text=No+Image" alt="Voice Agent" class="project-img w-full h-full object-cover" loading="lazy">
+          <div class="absolute top-4 left-4 flex gap-2">
+            <span class="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-[10px] font-mono tracking-wider">AI AGENT</span>
+          </div>
+        </div>
+        <div class="tilt-inner p-7">
+          <div class="flex items-start justify-between gap-4 mb-3">
+            <h3 class="font-display font-semibold text-2xl">Google Calendar Voice Agent</h3>
+          </div>
+          <p class="text-[var(--text-dim)] text-sm leading-relaxed mb-5">A sophisticated AI agent that communicates in Persian to schedule events directly into Google Calendar. Replaces traditional UI with natural conversation for seamless time management.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">LangGraph</span>
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Google API</span>
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Voice AI</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 4 -->
+      <article class="project-card tilt glass rounded-2xl overflow-hidden glow-border group" data-tilt>
+        <div class="relative overflow-hidden h-64">
+          <img src="oodsan.png" alt="Oodsan Coffee" class="project-img w-full h-full object-cover" loading="lazy">
+          <div class="absolute top-4 left-4 flex gap-2">
+            <span class="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-[10px] font-mono tracking-wider">FULL-STACK</span>
+          </div>
+        </div>
+        <div class="tilt-inner p-7">
+          <div class="flex items-start justify-between gap-4 mb-3">
+            <h3 class="font-display font-semibold text-2xl">Oodsan Coffee Shop</h3>
+          </div>
+          <p class="text-[var(--text-dim)] text-sm leading-relaxed mb-5">A complete web platform for a Persian coffee shop including user registration, menu browsing, and an ordering system. Built from scratch with a robust Django backend.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Django</span>
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">HTML/CSS</span>
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">JavaScript</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 5 -->
+      <article class="project-card tilt glass rounded-2xl overflow-hidden glow-border group" data-tilt>
+        <div class="relative overflow-hidden h-64">
+          <img src="https://placehold.co/600x400?text=No+Image" alt="Voice Communication" class="project-img w-full h-full object-cover" loading="lazy">
+          <div class="absolute top-4 left-4 flex gap-2">
+            <span class="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-[10px] font-mono tracking-wider">EXPERIMENT</span>
+          </div>
+        </div>
+        <div class="tilt-inner p-7">
+          <div class="flex items-start justify-between gap-4 mb-3">
+            <h3 class="font-display font-semibold text-2xl">Persian Voice Communication Agent</h3>
+          </div>
+          <p class="text-[var(--text-dim)] text-sm leading-relaxed mb-5">A conversational AI prototype focused on natural, free-flowing communication in Persian. Engineered to understand context and intent in real-time audio streams.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">Python</span>
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">LangChain</span>
+            <span class="text-[10px] font-mono px-2 py-1 rounded-md bg-[var(--surface)] text-[var(--text-dim)] border border-[var(--border)]">NLP</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="px-6 md:px-12 py-24 md:py-32">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div class="reveal">
+        <div class="section-label mb-6">05 / Recognition</div>
+        <h2 class="font-display font-semibold text-4xl md:text-6xl leading-[1.05]">
+          Awards &<br>
+          <span class="text-[var(--text-dim)]">milestones.</span>
+        </h2>
+      </div>
+      <p class="text-[var(--text-dim)] max-w-md reveal">Validation of a relentless drive for excellence in academics and engineering. Selected highlights.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 reveal-stagger">
+      <div class="glass rounded-2xl p-7 glow-border group">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="trophy" class="w-6 h-6 text-[var(--accent)]"></i>
+          </div>
+          <span class="font-mono text-xs text-[var(--text-dimmer)]">GOLD MEDAL</span>
+        </div>
+        <h3 class="font-display font-semibold text-xl mb-2">1st Place — Kharazmi Province</h3>
+        <p class="text-[var(--text-dim)] text-sm leading-relaxed">Awarded First Place (Gold Medal) in the Website Development field at the Kharazmi Competition across Tehran Province.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-7 glow-border">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="award" class="w-6 h-6 text-[var(--accent)]"></i>
+          </div>
+          <span class="font-mono text-xs text-[var(--text-dimmer)]">GOLD MEDAL</span>
+        </div>
+        <h3 class="font-display font-semibold text-xl mb-2">1st Place — Kharazmi District 2</h3>
+        <p class="text-[var(--text-dim)] text-sm leading-relaxed">Secured First Place (Gold Medal) in the Kharazmi Website Development Competition for District 2 of Tehran.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-7 glow-border">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="check-circle" class="w-6 h-6 text-[var(--accent)]"></i>
+          </div>
+          <span class="font-mono text-xs text-[var(--text-dimmer)]">QUALIFIED</span>
+        </div>
+        <h3 class="font-display font-semibold text-xl mb-2">INOI First-Layer Exam</h3>
+        <p class="text-[var(--text-dim)] text-sm leading-relaxed">Successfully accepted at the first-layer exam of the Iranian National Informatics Olympiad (INOI) for Machine Learning & Deep Learning.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-7 glow-border">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="star" class="w-6 h-6 text-[var(--accent)]"></i>
+          </div>
+          <span class="font-mono text-xs text-[var(--text-dimmer)]">SAMBAD</span>
+        </div>
+        <h3 class="font-display font-semibold text-xl mb-2">Sampad Exceptional Talents</h3>
+        <p class="text-[var(--text-dim)] text-sm leading-relaxed">Accepted into the National Organization for Development of Exceptional Talents (Sampad), recognizing top-tier academic capability.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-7 glow-border">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="trending-up" class="w-6 h-6 text-[var(--accent)]"></i>
+          </div>
+          <span class="font-mono text-xs text-[var(--text-dimmer)]">ACADEMIC</span>
+        </div>
+        <h3 class="font-display font-semibold text-xl mb-2">Top 3 School Ranking</h3>
+        <p class="text-[var(--text-dim)] text-sm leading-relaxed">Consistently ranked in the top 3 students across almost all term exams at Allame Heli 4, maintaining exceptional academic standards.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-7 glow-border">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center">
+            <i data-lucide="languages" class="w-6 h-6 text-[var(--accent)]"></i>
+          </div>
+          <span class="font-mono text-xs text-[var(--text-dimmer)]">PROFICIENCY</span>
+        </div>
+        <h3 class="font-display font-semibold text-xl mb-2">Advanced English Certification</h3>
+        <p class="text-[var(--text-dim)] text-sm leading-relaxed">Completed the Advanced Term at Iran Europe English Institute, achieving near-native fluency for technical and international communication.</p>
+      </div>
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <div class="mt-24">
+      <div class="flex items-center gap-3 mb-8 reveal">
+        <i data-lucide="badge-check" class="w-5 h-5 text-[var(--accent)]"></i>
+        <h3 class="font-display font-semibold text-2xl">Certifications</h3>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 reveal-stagger">
+        <div class="flex items-center gap-5 glass rounded-xl p-5 glow-border">
+          <div class="w-14 h-14 rounded-lg bg-[var(--surface-2)] flex items-center justify-center font-display font-bold text-lg text-[var(--accent)]">TTC</div>
+          <div class="flex-1">
+            <div class="font-semibold">Full-Stack & AI Development Track</div>
+            <div class="text-xs text-[var(--text-dim)] mt-1">Tehran Technical Complex · Python, Django, HTML/CSS, JS, Deep Learning, TS</div>
+          </div>
+          <i data-lucide="shield-check" class="w-5 h-5 text-[var(--accent)]" data-hover></i>
+        </div>
+        <div class="flex items-center gap-5 glass rounded-xl p-5 glow-border">
+          <div class="w-14 h-14 rounded-lg bg-[var(--surface-2)] flex items-center justify-center font-display font-bold text-lg text-[var(--accent)]">INOI</div>
+          <div class="flex-1">
+            <div class="font-semibold">Machine Learning & Deep Learning</div>
+            <div class="text-xs text-[var(--text-dim)] mt-1">Iranian National Informatics Olympiad · INOI</div>
+          </div>
+          <i data-lucide="shield-check" class="w-5 h-5 text-[var(--accent)]" data-hover></i>
+        </div>
+        <div class="flex items-center gap-5 glass rounded-xl p-5 glow-border">
+          <div class="w-14 h-14 rounded-lg bg-[var(--surface-2)] flex items-center justify-center font-display font-bold text-lg text-[var(--accent)]">KH</div>
+          <div class="flex-1">
+            <div class="font-semibold">Kharazmi Web Development (Gold)</div>
+            <div class="text-xs text-[var(--text-dim)] mt-1">Kharazmi Young Festival · 1st Place, Tehran Province</div>
+          </div>
+          <i data-lucide="shield-check" class="w-5 h-5 text-[var(--accent)]" data-hover></i>
+        </div>
+        <div class="flex items-center gap-5 glass rounded-xl p-5 glow-border">
+          <div class="w-14 h-14 rounded-lg bg-[var(--surface-2)] flex items-center justify-center font-display font-bold text-lg text-[var(--accent)]">IE</div>
+          <div class="flex-1">
+            <div class="font-semibold">Advanced English Level</div>
+            <div class="text-xs text-[var(--text-dim)] mt-1">Iran Europe English Institute · Advanced Term</div>
+          </div>
+          <i data-lucide="shield-check" class="w-5 h-5 text-[var(--accent)]" data-hover></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="mt-24">
+      <div class="flex items-center gap-3 mb-8 reveal">
+        <i data-lucide="graduation-cap" class="w-5 h-5 text-[var(--accent)]"></i>
+        <h3 class="font-display font-semibold text-2xl">Education</h3>
+      </div>
+      <div class="glass rounded-2xl p-8 reveal glow-border">
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="md:col-span-2">
+            <div class="font-mono text-xs text-[var(--accent)] tracking-widest mb-3">2023 — PRESENT (11TH GRADE)</div>
+            <h4 class="font-display font-semibold text-2xl mb-2">Diploma in Progress (STEM Focus)</h4>
+            <div class="text-[var(--text-dim)] mb-4">Allame Heli 4 · National Organization for Development of Exceptional Talents (Sampad)</div>
+            <p class="text-[var(--text-dim)] text-sm leading-relaxed">Selected through Sampad's highly competitive entrance examination. Maintaining Top 3 academic ranking across all term examinations while simultaneously pursuing advanced external coursework in AI, Deep Learning, and Full-Stack Engineering.</p>
+          </div>
+          <div class="md:border-l md:border-[var(--border)] md:pl-6 space-y-3 text-sm">
+            <div>
+              <div class="font-mono text-xs text-[var(--text-dimmer)] tracking-widest">STATUS</div>
+              <div class="text-[var(--text-dim)] mt-1">Current 11th Grade Student</div>
+            </div>
+            <div>
+              <div class="font-mono text-xs text-[var(--text-dimmer)] tracking-widest">HONORS</div>
+              <div class="text-[var(--text-dim)] mt-1">Top 3 Ranking (Consistent)</div>
+            </div>
+            <div>
+              <div class="font-mono text-xs text-[var(--text-dimmer)] tracking-widest">SPECIALIZATION</div>
+              <div class="text-[var(--text-dim)] mt-1">Mathematics & Physiques</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="px-6 md:px-12 py-24 md:py-32 bg-[var(--bg-soft)] border-t border-[var(--border)] relative overflow-hidden">
+  <div class="absolute inset-0 grid-bg opacity-50 pointer-events-none"></div>
+  <div class="max-w-7xl mx-auto relative">
+    <div class="section-label reveal mb-6">06 / Contact</div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+      <div class="lg:col-span-7 reveal">
+        <h2 class="font-display font-bold text-5xl md:text-7xl lg:text-8xl leading-[.95] mb-8">
+          Let's build<br>
+          <span class="text-[var(--accent)]">something</span><br>
+          <span class="text-[var(--text-dim)]">remarkable.</span>
+        </h2>
+        <p class="text-[var(--text-dim)] text-lg max-w-xl mb-10">Open to collaborative AI projects, internships, and freelance opportunities. I read every message — usually reply within 24 hours.</p>
+
+        <div class="flex flex-wrap gap-3">
+          <a href="mailto:your.email@gmail.com" class="btn-primary" data-hover data-magnetic>
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            Send an email
+          </a>
+          <button id="copyEmail" class="btn-ghost" data-hover data-magnetic>
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            Copy email
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 reveal">
+        <div class="glass rounded-2xl p-7 space-y-1">
+          <div class="font-mono text-xs text-[var(--text-dim)] tracking-widest mb-5">DIRECT CHANNELS</div>
+
+          <a href="mailto:your.email@gmail.com" class="flex items-center justify-between p-4 rounded-xl hover:bg-white/5 transition group" data-hover>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center"><i data-lucide="mail" class="w-4 h-4 text-[var(--accent)]"></i></div>
+              <div>
+                <div class="text-xs text-[var(--text-dim)] font-mono">EMAIL</div>
+                <div class="text-sm">alibagheri8813@gmail.com</div>
+              </div>
+            </div>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 text-[var(--text-dimmer)] group-hover:text-[var(--accent)] transition"></i>
+          </a>
+
+          <a href="tel:+989000000000" class="flex items-center justify-between p-4 rounded-xl hover:bg-white/5 transition group" data-hover>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center"><i data-lucide="phone" class="w-4 h-4 text-[var(--accent)]"></i></div>
+              <div>
+                <div class="text-xs text-[var(--text-dim)] font-mono">PHONE</div>
+                <div class="text-sm">+98 910 808 7593</div>
+              </div>
+            </div>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 text-[var(--text-dimmer)] group-hover:text-[var(--accent)] transition"></i>
+          </a>
+
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener" class="flex items-center justify-between p-4 rounded-xl hover:bg-white/5 transition group" data-hover>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center"><i data-lucide="github" class="w-4 h-4 text-[var(--accent)]"></i></div>
+              <div>
+                <div class="text-xs text-[var(--text-dim)] font-mono">GITHUB</div>
+                <div class="text-sm">github.com/Alibagheri8813</div>
+              </div>
+            </div>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 text-[var(--text-dimmer)] group-hover:text-[var(--accent)] transition"></i>
+          </a>
+
+          <a href="https://www.linkedin.com/in/ali-bagheri-001445342" target="_blank" rel="noopener" class="flex items-center justify-between p-4 rounded-xl hover:bg-white/5 transition group" data-hover>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center"><i data-lucide="linkedin" class="w-4 h-4 text-[var(--accent)]"></i></div>
+              <div>
+                <div class="text-xs text-[var(--text-dim)] font-mono">LINKEDIN</div>
+                <div class="text-sm">https://www.linkedin.com/in/ali-bagheri-001445342</div>
+              </div>
+            </div>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 text-[var(--text-dimmer)] group-hover:text-[var(--accent)] transition"></i>
+          </a>
+
+          <a href="https://t.me/AliBagheri8813" target="_blank" rel="noopener" class="flex items-center justify-between p-4 rounded-xl hover:bg-white/5 transition group" data-hover>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center"><i data-lucide="send" class="w-4 h-4 text-[var(--accent)]"></i></div>
+              <div>
+                <div class="text-xs text-[var(--text-dim)] font-mono">TELEGRAM</div>
+                <div class="text-sm">@AliBagheri8813</div>
+              </div>
+            </div>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 text-[var(--text-dimmer)] group-hover:text-[var(--accent)] transition"></i>
+          </a>
+        </div>
+
+        <div class="mt-5 flex items-center justify-between p-5 glass rounded-2xl">
+          <div class="flex items-center gap-3">
+            <span class="status-dot"></span>
+            <div>
+              <div class="text-sm font-semibold">Lets Talk</div>
+              <div class="text-xs text-[var(--text-dim)] font-mono">CURRENTLY · OPEN</div>
+            </div>
+          </div>
+          <div class="font-mono text-xs text-[var(--text-dim)]">TEHRAN · IR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="px-6 md:px-12 py-12 border-t border-[var(--border)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-7 h-7 rounded-md bg-[var(--accent)] flex items-center justify-center font-display font-bold text-black text-sm">AB</div>
+          <span class="font-display font-semibold">Ali Bagheri</span>
+        </div>
+        <p class="text-[var(--text-dim)] text-sm max-w-md">Designed, built and engineered in Tehran with a passion for AI, web development, and continuous learning.</p>
+      </div>
+      <div class="flex flex-col md:items-end gap-3">
+        <div class="flex gap-3">
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener" class="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition" data-hover aria-label="GitHub"><i data-lucide="github" class="w-4 h-4"></i></a>
+          <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener" class="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition" data-hover aria-label="LinkedIn"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+          <a href="https://t.me/yourusername" target="_blank" rel="noopener" class="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition" data-hover aria-label="Telegram"><i data-lucide="send" class="w-4 h-4"></i></a>
+          <a href="mailto:your.email@gmail.com" class="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition" data-hover aria-label="Email"><i data-lucide="mail" class="w-4 h-4"></i></a>
+        </div>
+        <div class="font-mono text-xs text-[var(--text-dimmer)]">© 2024 · ALL SYSTEMS NOMINAL · <span id="footerTime"></span></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button id="backTop" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-[var(--accent)] text-black flex items-center justify-center shadow-lg shadow-[var(--accent-glow)] opacity-0 pointer-events-none transition-opacity z-40" data-hover aria-label="Back to top">
+  <i data-lucide="arrow-up" class="w-5 h-5"></i>
+</button>
+
+<script>
+  // Init Lucide icons
+  lucide.createIcons();
+
+  // ─── Custom cursor ───
+  const dot = document.querySelector('.cursor-dot');
+  const ring = document.querySelector('.cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('[data-hover]').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+
+  // ─── Magnetic effect ───
+  document.querySelectorAll('[data-magnetic]').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    });
+    el.addEventListener('mouseleave', () => el.style.transform = '');
+  });
+
+  // ─── Scroll progress ───
+  const progress = document.querySelector('.scroll-progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (window.scrollY / h * 100) + '%';
+  });
+
+  // ─── Reveal on scroll ───
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+  // ─── Live time ───
+  function updateTime() {
+    const now = new Date();
+    const opts = { hour: '2-digit', minute: '2-digit', hour12: false };
+    document.getElementById('liveTime').textContent = now.toLocaleTimeString('en-US', opts);
+    document.getElementById('footerTime').textContent = now.toLocaleTimeString('en-US', opts) + ' IR';
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+
+  // ─── Typewriter ───
+  const roles = ['AI Developer', 'Full-Stack Engineer', 'Young Innovator', 'ML Enthusiast', 'Agent Architect'];
+  const roleEl = document.getElementById('roleText');
+  let ri = 0, ci = 0, deleting = false;
+
+  function type() {
+    const word = roles[ri];
+    if (deleting) {
+      roleEl.textContent = word.substring(0, ci--);
+      if (ci < 0) { deleting = false; ri = (ri + 1) % roles.length; ci = 0; setTimeout(type, 400); return; }
+      setTimeout(type, 40);
+    } else {
+      roleEl.textContent = word.substring(0, ci++);
+      if (ci > word.length) { deleting = true; setTimeout(type, 1800); return; }
+      setTimeout(type, 80);
+    }
+  }
+  type();
+
+  // ─── Counters ───
+  const counters = document.querySelectorAll('[data-count]');
+  const counterIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = +el.dataset.count;
+        const suffix = el.dataset.suffix || '';
+        let cur = 0;
+        const step = Math.max(1, target / 60);
+        const tick = () => {
+          cur += step;
+          if (cur >= target) { el.textContent = target + suffix; return; }
+          el.textContent = Math.floor(cur) + suffix;
+          requestAnimationFrame(tick);
+        };
+        tick();
+        counterIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterIO.observe(c));
+
+  // ─── Tilt ───
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(1000px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+    });
+    card.addEventListener('mouseleave', () => card.style.transform = '');
+  });
+
+  // ─── Active nav link ───
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const navIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => navIO.observe(s));
+
+  // ─── Mobile menu ───
+  const menuBtn = document.getElementById('menuBtn');
+  const closeMenu = document.getElementById('closeMenu');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
+  closeMenu.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  // ─── Back to top ───
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 800) {
+      backTop.style.opacity = '1';
+      backTop.style.pointerEvents = 'auto';
+    } else {
+      backTop.style.opacity = '0';
+      backTop.style.pointerEvents = 'none';
+    }
+  });
+  backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // ─── Copy email ───
+  const copyBtn = document.getElementById('copyEmail');
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('your.email@gmail.com');
+      toastMsg.textContent = 'Email copied to clipboard';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    } catch {
+      toastMsg.textContent = 'Could not copy — try manually';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+  });
+
+  // ─── Hero particle canvas ───
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let mouse = { x: -1000, y: -1000 };
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    initParticles();
+  }
+
+  function initParticles() {
+    const count = Math.min(80, Math.floor(canvas.width * canvas.height / 18000));
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.5 + 0.5
+      });
+    }
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+      const dxm = p.x - mouse.x, dym = p.y - mouse.y;
+      const dm = Math.sqrt(dxm * dxm + dym * dym);
+      if (dm < 120) {
+        p.x += dxm / dm * 0.8;
+        p.y += dym / dm * 0.8;
+      }
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.1, p.r), 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(197,242,58,0.5)';
+      ctx.fill();
+    });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 130) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(197,242,58,${0.12 * (1 - d / 130)})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(drawParticles);
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  });
+  canvas.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
+
+  window.addEventListener('resize', resize);
+  resize();
+  drawParticles();
+
+  // ─── Smooth scroll for hash links ───
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if (href.length > 1) {
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>
